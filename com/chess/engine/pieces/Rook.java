@@ -6,21 +6,20 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class Bishop extends Piece {
+public class Rook extends Piece {
+    private static final int[] CANDIDATE_MOVE_COORDINATES = {-8, -1, 1, 8};
 
-    private static final int[] CANDIDATE_MOVE_COORDINATES = {-9, -7, 7, 9};
-
-    Bishop(int piecePosition, Alliance pieceAlliance) {
+    Rook(int piecePosition, Alliance pieceAlliance) {
         super(piecePosition, pieceAlliance);
     }
 
     @Override
-    public List<Move> calculatedMoves(final Board board) {
+    public List<Move> calculatedMoves(Board board) {
         final List<Move> legalMoves = new ArrayList<>();
         for (int offset : CANDIDATE_MOVE_COORDINATES) {
             int candidateCoordinate = this.piecePosition;
             while (BoardUtils.isValidTileCoordinate(candidateCoordinate)) {
-                if(isFirstColumnExclusion(candidateCoordinate,offset) || isEightColumnExclusion(candidateCoordinate,offset)) {
+                if (isFirstColumnExclusion(candidateCoordinate, offset) || isEightColumnExclusion(candidateCoordinate, offset)) {
                     break;
                 }
                 candidateCoordinate += offset;
@@ -43,14 +42,11 @@ public class Bishop extends Piece {
         return Collections.unmodifiableList(legalMoves);
     }
 
-    private  static  boolean isFirstColumnExclusion(final int currentPosition, final int offset) {
-        return BoardUtils.FIRST_COLUMN[currentPosition] && (offset == -9 && offset == 7);
+    private static boolean isFirstColumnExclusion(final int currentPosition, final int offset) {
+        return BoardUtils.FIRST_COLUMN[currentPosition] && (offset == -1);
     }
 
-    private  static  boolean isEightColumnExclusion(final int currentPosition, final int offset) {
-        return BoardUtils.EIGHT_COLUMN[currentPosition] && (offset == -7 && offset == 9);
+    private static boolean isEightColumnExclusion(final int currentPosition, final int offset) {
+        return BoardUtils.EIGHT_COLUMN[currentPosition] && (offset == 1);
     }
 }
-
-
-
