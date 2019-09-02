@@ -1,6 +1,7 @@
 package com.chess.engine.board;
 import com.chess.engine.pieces.Piece;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,7 +15,7 @@ public abstract class Tile {
             for(int i = 0; i < 63; i++) {
                 emptyTilesMap.put(i,new EmptyTile(i));
             }
-            return  emptyTilesMap;
+            return Collections.unmodifiableMap(emptyTilesMap);
 
     }
 
@@ -49,7 +50,7 @@ public abstract class Tile {
     public static final class OccupiedTile extends Tile {
 
         private final Piece pieceOnTile;
-        OccupiedTile(int coordinates , Piece piece) {
+        private OccupiedTile(int coordinates , Piece piece) {
             super(coordinates);
             this.pieceOnTile = piece;
         }
