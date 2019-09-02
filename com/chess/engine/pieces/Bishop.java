@@ -44,11 +44,11 @@ public class Bishop extends Piece {
     }
 
     private  static  boolean isFirstColumnExclusion(final int currentPosition, final int offset) {
-        return BoardUtils.FIRST_COLUMN[currentPosition] && (offset == -9 && offset == 7);
+        return BoardUtils.FIRST_COLUMN[currentPosition] && (offset == -9 || offset == 7);
     }
 
     private  static  boolean isEightColumnExclusion(final int currentPosition, final int offset) {
-        return BoardUtils.EIGHT_COLUMN[currentPosition] && (offset == -7 && offset == 9);
+        return BoardUtils.EIGHT_COLUMN[currentPosition] && (offset == -7 || offset == 9);
     }
 }
 
