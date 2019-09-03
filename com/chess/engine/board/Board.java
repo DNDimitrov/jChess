@@ -2,6 +2,7 @@ package com.chess.engine.board;
 
 import com.chess.engine.pieces.*;
 import com.chess.engine.player.BlackPlayer;
+import com.chess.engine.player.Player;
 import com.chess.engine.player.WhitePlayer;
 
 import java.util.*;
@@ -44,6 +45,14 @@ public class Board {
 
     public List<Piece> getBlackPieces(){
         return this.blacks;
+    }
+
+    public Player whitePlayer() {
+        return  this.whitePlayer;
+    }
+
+    public Player blackPlayer() {
+        return  this.blackPlayer;
     }
 
     public List<Piece> getWhitePieces(){
