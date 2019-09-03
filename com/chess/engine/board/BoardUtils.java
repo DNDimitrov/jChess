@@ -7,11 +7,22 @@ public class BoardUtils {
     public static final boolean[] SEVENTH_COLUMN = initColumn(6);
     public static final boolean[] EIGHT_COLUMN = initColumn(7);
 
-    public static final boolean[] SECOND_ROW = null;
-    public static final boolean[] SEVENTH_ROW = null;
+    public static final boolean[] SECOND_ROW = initRow(8);
+    public static final boolean[] SEVENTH_ROW = initRow(48);
+
+
 
     public static final int NUM_TILES = 64;
     public static final int NUM_TILES_ON_ROW = 8;
+
+    private static boolean[] initRow(int rowNumber) {
+        final boolean[] row = new boolean[NUM_TILES];
+        while(rowNumber % NUM_TILES_ON_ROW != 0) {
+            row[rowNumber] = true;
+            rowNumber++;
+        }
+        return row;
+    }
 
     private static boolean[] initColumn(int i) {
         final boolean[] column = new boolean[NUM_TILES];

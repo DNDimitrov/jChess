@@ -41,7 +41,10 @@ public class Queen extends Piece {
         }
         return Collections.unmodifiableList(legalMoves);
     }
-
+    @Override
+    public String toString() {
+        return PieceType.QUEEN.toString();
+    }
     private static boolean isFirstColumnExclusion(final int currentPosition, final int offset) {
         return BoardUtils.FIRST_COLUMN[currentPosition] && (offset == -1 || offset == -9 || offset == 7);
     }
