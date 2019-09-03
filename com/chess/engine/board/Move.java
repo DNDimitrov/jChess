@@ -18,6 +18,9 @@ public abstract class Move {
     public int getDestinationCoordinate() {
         return this.destinationCoordinate;
     }
+    public Piece getMovedPieace() {
+        return this.movedPieace;
+    }
 
     public static final class MajorMove extends Move {
 
@@ -42,7 +45,7 @@ public abstract class Move {
                 builder.setPiece(piece);
             }
             //move the moved piece
-            builder.setPiece(null);
+            builder.setPiece(this.movedPieace.movePiece(this));
             builder.setMoveMaker(this.board.currentPlayer().getOpponent().getAlliance());
             return builder.build();
         }
