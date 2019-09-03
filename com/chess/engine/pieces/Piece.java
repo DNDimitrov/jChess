@@ -19,7 +19,7 @@ private final int cashedHashCode;
         this.pieceAlliance=pieceAlliance;
         this.piecePosition=piecePosition;
         this.isFirstMove = false;
-        this.hashCode() = computeHashCode();
+        this.cashedHashCode = computeHashCode();
         }
 
     protected int computeHashCode() {
@@ -27,6 +27,7 @@ private final int cashedHashCode;
         result = 31 * result + pieceAlliance.hashCode();
         result = 31 * result + piecePosition;
         result = 31 * result + (isFirstMove ? 1 : 0);
+        return  result;
     };
 
     public PieceType getPieceType() {

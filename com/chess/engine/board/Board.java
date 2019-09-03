@@ -147,10 +147,20 @@ public class Board {
 
     }
 
+    public List<Move> getAllMoves() {
+        List<Move> allMoves = new ArrayList<>();
+        allMoves.addAll(this.whitePlayer.getLegalMoves());
+        allMoves.addAll(this.blackPlayer.getLegalMoves());
+
+        return Collections.unmodifiableList(getAllMoves());
+
+    }
+
     public static class Builder {
 
         Map<Integer, Piece> boardConfig;
         Alliance nextMoveMaker;
+        Pawn enPessantPawn;
 
         public Builder() {
             this.boardConfig = new HashMap<>();
@@ -167,6 +177,10 @@ public class Board {
         }
         public Board build() {
             return new Board(this);
+        }
+
+        public void setEnPessantPawn(Pawn movedPawn) {
+            this.enPessantPawn = movedPawn;
         }
     }
 }
