@@ -1,6 +1,8 @@
 package com.chess.engine.board;
 
 import com.chess.engine.pieces.*;
+import com.chess.engine.player.BlackPlayer;
+import com.chess.engine.player.WhitePlayer;
 
 import java.util.*;
 
@@ -11,6 +13,9 @@ public class Board {
     private final List<Piece> blacks;
 
 
+    private final WhitePlayer whitePlayer;
+    private final BlackPlayer blackPlayer;
+
     private Board (Builder builder) {
         this.gameBoard = createGameBoard(builder);
         this.blacks = calculateActivePieces(this.gameBoard,Alliance.BLACK);
@@ -18,6 +23,9 @@ public class Board {
 
         final List<Move> whitesStandartLegalMoves = calculateStandartMoves(this.whites);
         final List<Move> blacksStandartLegalMoves = calculateStandartMoves(this.blacks);
+
+        this.whitePlayer = new WhitePlayer(this,whitesStandartLegalMoves,blacksStandartLegalMoves);
+        this.blackPlayer = new BlackPlayer(this,whitesStandartLegalMoves,blacksStandartLegalMoves);
 
     }
 
@@ -32,6 +40,14 @@ public class Board {
             }
         }
         return builder.toString();
+    }
+
+    public List<Piece> getBlackPieces(){
+        return this.blacks;
+    }
+
+    public List<Piece> getWhitePieces(){
+        return this.whites;
     }
 
     private List<Move> calculateStandartMoves(final List<Piece> alliance) {

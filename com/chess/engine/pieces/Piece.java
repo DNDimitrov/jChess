@@ -8,16 +8,21 @@ import java.util.List;
 
 public abstract class Piece{
 
+    protected final PieceType pieceType;
 protected final int piecePosition;
 protected final Alliance pieceAlliance;
 protected final boolean isFirstMove;
 
-        Piece(final int piecePosition,final Alliance pieceAlliance){
+        Piece(final PieceType pieceType, int piecePosition,final Alliance pieceAlliance){
+            this.pieceType = pieceType;
         this.pieceAlliance=pieceAlliance;
         this.piecePosition=piecePosition;
         this.isFirstMove = false;
         }
 
+        public PieceType getPieceType() {
+            return this.pieceType;
+        }
     public final Alliance getAlliance() {
         return pieceAlliance;
     }
@@ -35,12 +40,44 @@ protected final boolean isFirstMove;
 
     public enum PieceType {
 
-        PAWN("P"),
-        KNIGHT("N"),
-        BISHOP("B"),
-        ROOK("R"),
-        QUEEN("Q"),
-        KING("K");
+        PAWN("P") {
+            @Override
+            public boolean isKing() {
+                return false;
+            }
+        },
+        KNIGHT("N") {
+            @Override
+            public boolean isKing() {
+                return false;
+
+            }
+        },
+        BISHOP("B") {
+            @Override
+            public boolean isKing() {
+            return false;
+            }
+        },
+        ROOK("R") {
+            @Override
+            public boolean isKing() {
+                return false;
+            }
+        },
+        QUEEN("Q") {
+            @Override
+            public boolean isKing() {
+                return false;
+            }
+        },
+
+        KING("K") {
+            @Override
+            public boolean isKing() {
+                return true;
+            }
+        };
 
         private String pieceName;
 
@@ -53,6 +90,7 @@ protected final boolean isFirstMove;
             return this.pieceName;
         }
 
+        public abstract boolean isKing();
     }
 }
 
