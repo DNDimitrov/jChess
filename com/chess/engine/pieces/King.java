@@ -10,7 +10,7 @@ public class King extends Piece{
 
     private final static int[] CANDIDATE_MOVE_COORDINATES = {-7,-8,-9,-1,1,7,8,9};
 
-    King(int piecePosition, Alliance pieceAlliance) {
+    public King(int piecePosition, Alliance pieceAlliance) {
         super(piecePosition, pieceAlliance);
     }
 

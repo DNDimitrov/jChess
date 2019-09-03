@@ -18,12 +18,16 @@ protected final boolean isFirstMove;
         this.isFirstMove = false;
         }
 
-    final Alliance getAlliance() {
+    public final Alliance getAlliance() {
         return pieceAlliance;
     }
 
     public boolean isFirstMove() {
             return this.isFirstMove;
+    }
+
+    public int getPiecePosition() {
+            return this.piecePosition;
     }
 
     public abstract List<Move> calculatedMoves(final Board board);
