@@ -25,6 +25,14 @@ public abstract class Player {
         this.isInCheck = !Player.calculateAttacksOnTile(this.playerKing.getPiecePosition(),opponentMove).isEmpty();
     }
 
+    //Not sure if this function should return Piece or King object
+    public Piece getPlayerKing() {
+        return this.playerKing;
+    }
+
+    public List<Move> getLegalMoves() {
+        return this.legalMoves;
+    }
     private static List<Move>  calculateAttacksOnTile(int piecePosition, List<Move> opponentMoves) {
         final List<Move> attackMoves = new ArrayList<>();
         for(final Move move: opponentMoves) {
@@ -75,8 +83,24 @@ public abstract class Player {
     }
 
     public MoveTransition makeMove(final Move move) {
-        return null;
+        //if this move isnt an option the player has we return the same board and the move status is illegal
+        if(!isMoveLegal(move)) {
+            return  new MoveTransition(this.board,move, MoveStatus.ILLEGAL_MOVE);
+        }
+
+        //if the move is option for the player we make the move and check if his king is still in check after the move we shouldnt have done such a move
+        final Board transitionBoard = move.execute();
+        final List<Move> kingAttacks = Player.calculateAttacksOnTile(transitionBoard.currentPlayer().getOpponent().getPlayerKing().getPiecePosition(),
+                transitionBoard.currentPlayer().getLegalMoves());
+
+        if(!kingAttacks.isEmpty()) {
+            return new MoveTransition(this.board,move,MoveStatus.LEAVES_PLAYER_IN_CHECK);
+        }
+        //if the move is ok we return the new transition
+        return new MoveTransition(transitionBoard,move,MoveStatus.DONE);
     }
+
+
 
     public abstract List<Piece> getActivePieces();
     public abstract Alliance getAlliance();
