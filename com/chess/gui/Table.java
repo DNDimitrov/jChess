@@ -2,15 +2,21 @@ package com.chess.gui;
 
 import com.chess.engine.board.Board;
 import com.chess.engine.board.BoardUtils;
+import com.chess.engine.board.Move;
+import com.chess.engine.board.Tile;
+import com.chess.engine.pieces.Piece;
+import com.chess.engine.player.MoveTransition;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
+
+import static javax.swing.SwingUtilities.isLeftMouseButton;
+import static javax.swing.SwingUtilities.isRightMouseButton;
 
 public class Table {
 
@@ -18,8 +24,11 @@ public class Table {
     private final BoardPanel boardPanel;
     private final Color lightTileColor = Color.decode("#FFFACD");
     private final Color darkTileColor = Color.decode("#593E1A");
-    private final Board chessBoard;
+    private Board chessBoard;
     private static String defaultPieceImagesPath = "E:/jChess/art/fancy/";
+    private Tile sourceTile;
+    private Tile destinationTile;
+    private Piece humanMovedPiece;
 
     private static final Dimension FRAME_DIMENSION_SIZE = new Dimension(600,600);
     private static final Dimension BOARD_PANEL_DIMENSION = new Dimension(400,350);
@@ -81,6 +90,16 @@ public class Table {
             validate();
 
         }
+
+        public void drawBoard(final Board board) {
+            removeAll();
+            for(final TilePanel tilePanel : boardTiles) {
+                tilePanel.drawTile(board);
+                add(tilePanel);
+            }
+            validate();
+            repaint();
+        }
     }
 
     private class TilePanel extends JPanel {
@@ -91,13 +110,79 @@ public class Table {
             setPreferredSize(TILE_PANEL_DIMENSION);
             assignTileColour();
             assignPieceIcon(chessBoard);
+            addMouseListener(new MouseListener() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    if (isRightMouseButton(e)) {
+                        sourceTile = null;
+                        destinationTile = null;
+                        humanMovedPiece = null;
+                    }
+                    if (isLeftMouseButton(e)) {
+                        if (sourceTile == null) {
+                            sourceTile = chessBoard.getTile(tileId);
+                            humanMovedPiece = sourceTile.getPiece();
+                            if (humanMovedPiece == null) {
+                                sourceTile = null;
+                            }
+                        }
+                        else {
+                                destinationTile = chessBoard.getTile(tileId);
+                                final Move move = Move.MoveFactory.createMove(chessBoard,
+                                                                              sourceTile.getTileCoordinate(),
+                                                                              destinationTile.getTileCoordinate());
+                                MoveTransition transition = chessBoard.currentPlayer().makeMove(move);
+                                if(transition.getMoveStatus().isDone()) {
+                                    chessBoard = transition.getTransitionBoard();
+                                    //TODO move log
+                                }
+                                sourceTile = null;
+                                destinationTile = null;
+                                humanMovedPiece = null;
+                            }
+                        SwingUtilities.invokeLater(new Runnable() {
+                            @Override
+                            public void run() {
+                                boardPanel.drawBoard(chessBoard);
+                            }
+                        });
+                        }
+                }
+
+                @Override
+                public void mousePressed(MouseEvent e) {
+
+                }
+
+                @Override
+                public void mouseReleased(MouseEvent e) {
+
+                }
+
+                @Override
+                public void mouseEntered(MouseEvent e) {
+
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+
+                }
+            });
             validate();
         }
 
+        public void drawTile(final Board board){
+            assignTileColour();
+            assignPieceIcon(board);
+            validate();
+            repaint();
+        }
         private void assignPieceIcon(final Board board) {
             this.removeAll();
             if(board.getTile(this.tileId).isOccupied()) {
 
+                //search for folder in the path for files starting with first letter and alliance .gif (example Black knight - BK.gif )
                 try {
                     final BufferedImage image =
                             ImageIO.read(new File(defaultPieceImagesPath  + board.getTile(this.tileId).getPiece().getAlliance().toString().substring(0, 1) +

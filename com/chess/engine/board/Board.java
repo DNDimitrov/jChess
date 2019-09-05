@@ -13,6 +13,10 @@ public class Board {
     private final List<Piece> whites;
     private final List<Piece> blacks;
 
+    public Tile sourceTile;
+    private Tile destinationTile;
+    private Piece humanMovedPiece;
+
 
     private final WhitePlayer whitePlayer;
     private final BlackPlayer blackPlayer;
@@ -152,7 +156,7 @@ public class Board {
         allMoves.addAll(this.whitePlayer.getLegalMoves());
         allMoves.addAll(this.blackPlayer.getLegalMoves());
 
-        return Collections.unmodifiableList(getAllMoves());
+        return allMoves;
 
     }
 
