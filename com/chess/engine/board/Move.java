@@ -3,6 +3,7 @@ package com.chess.engine.board;
 import com.chess.engine.board.Board.Builder;
 import com.chess.engine.pieces.Pawn;
 import com.chess.engine.pieces.Piece;
+import com.chess.engine.pieces.Rook;
 
 public abstract class Move {
 
@@ -133,6 +134,8 @@ public abstract class Move {
 
     }
 
+
+
     public static final class PawnMove extends Move {
 
         public PawnMove(final Board board,
@@ -150,6 +153,8 @@ public abstract class Move {
         }
 
     }
+
+
 
     public static final class PawnEnPessantAttackMove extends AttackMove {
 
@@ -189,31 +194,86 @@ public abstract class Move {
 
     static abstract class CastleMove extends Move {
 
+        protected final Rook castleRook;
+        protected final int castleRookStart;
+        protected final int castleRookDestination;
+
         public CastleMove(final Board board, final Piece movedPieace,
-                         final int destinationCoordinate) {
+                          final int destinationCoordinate,
+                          final int castleRookDestination,
+                          final int castleRookStart,
+                          final Rook castleRook) {
             super(board, movedPieace, destinationCoordinate);
+            this.castleRook = castleRook;
+            this.castleRookStart = castleRookStart;
+            this.castleRookDestination = castleRookDestination;
         }
 
+        public Rook getCastleRook() {
+            return this.castleRook;
+        }
+
+        public int getGetCastleRookDestination() {
+            return this.castleRookDestination;
+        }
+
+        public int getCastleRookStart() {
+            return this.castleRookStart;
+        }
+
+        @Override
+        public boolean isCastledMove() {
+            return true;
+        }
+
+        @Override
+        public Board execute() {
+            final Builder builder = new Builder();
+            for(final Piece piece : this.board.currentPlayer().getActivePieces()) {
+                if(!this.movedPieace.equals(piece)  && !this.castleRook.equals(piece)) {
+                    builder.setPiece(piece);
+                }
+            }
+            for(final Piece piece : this.board.currentPlayer().getOpponent().getActivePieces()) {
+                builder.setPiece(piece);
+            }
+            builder.setPiece(this.movedPieace.movePiece(this));
+            builder.setPiece(new Rook(this.castleRookDestination,this.castleRook.getAlliance()));
+            builder.setMoveMaker(this.board.currentPlayer().getOpponent().getAlliance());
+            return builder.build();
+        }
     }
 
     public static final class KingSideCatleMove extends CastleMove {
 
         public KingSideCatleMove(final Board board,
                                  final Piece movedPieace,
-                                 final int destinationCoordinate) {
-            super(board, movedPieace, destinationCoordinate);
+                                 final int destinationCoordinate,
+                                 final int castleRookDestination,
+                                 final int castleRookStart,
+                                 final Rook castleRook) {
+            super(board, movedPieace, destinationCoordinate,castleRookDestination,castleRookStart,castleRook);
         }
 
+        @Override
+        public String toString() {
+            return "0-0";
+        }
     }
 
     public static final class QueenSideCastleMove extends CastleMove {
 
         public QueenSideCastleMove(final Board board,
                                    final Piece movedPieace,
-                                   final int destinationCoordinate) {
-            super(board, movedPieace, destinationCoordinate);
+                                   final int destinationCoordinate,
+                                   final int castleRookDestination,
+                                   final int castleRookStart,
+                                   final Rook castleRook) {
+            super(board, movedPieace, destinationCoordinate,castleRookDestination,castleRookStart,castleRook);
         }
-
+        public String toString() {
+            return "0-0-0";
+        }
     }
 
     public static final class NullMove extends Move {

@@ -10,19 +10,27 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 
 public abstract class Player {
 
     protected final Board board;
     protected final Piece playerKing;
-    protected final List<Move> legalMoves;
+    public  final List<Move> legalMoves;
     private final Boolean isInCheck;
 
     Player(final Board board, final List<Move> legalMoves, final List<Move> opponentMove) {
         this.board=board;
         this.playerKing = establishKing();
-        this.legalMoves = legalMoves;
+        this.legalMoves = merge(legalMoves, calculateKingCastle(legalMoves,opponentMove));
         this.isInCheck = !Player.calculateAttacksOnTile(this.playerKing.getPiecePosition(),opponentMove).isEmpty();
+    }
+
+    public static<Move> List<Move> merge(List<Move> list1, List<Move> list2)
+    {
+        List<Move> list = new ArrayList<>(list1);
+        list.addAll(list2);
+        return Collections.unmodifiableList(list);
     }
 
     //Not sure if this function should return Piece or King object
@@ -33,7 +41,7 @@ public abstract class Player {
     public List<Move> getLegalMoves() {
         return this.legalMoves;
     }
-    private static List<Move>  calculateAttacksOnTile(int piecePosition, List<Move> opponentMoves) {
+    protected static List<Move>  calculateAttacksOnTile(int piecePosition, List<Move> opponentMoves) {
         final List<Move> attackMoves = new ArrayList<>();
         for(final Move move: opponentMoves) {
             if(piecePosition == move.getDestinationCoordinate()) {
@@ -101,7 +109,7 @@ public abstract class Player {
     }
 
 
-
+    protected abstract List<Move> calculateKingCastle(List<Move> playerLegalMoves,List<Move> opponentLegalMoves);
     public abstract List<Piece> getActivePieces();
     public abstract Alliance getAlliance();
     public abstract Player getOpponent();
