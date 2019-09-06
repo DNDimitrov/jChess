@@ -23,6 +23,7 @@ public abstract class Player {
         this.board=board;
         this.playerKing = establishKing();
         this.legalMoves = merge(legalMoves, calculateKingCastle(legalMoves,opponentMove));
+
         this.isInCheck = !Player.calculateAttacksOnTile(this.playerKing.getPiecePosition(),opponentMove).isEmpty();
     }
 

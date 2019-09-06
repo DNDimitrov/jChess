@@ -15,7 +15,7 @@ public class King extends Piece{
     }
 
     @Override
-    public List<Move> calculatedMoves(Board board) {
+    public List<Move> calculateLegalMoves(Board board) {
 
         final List<Move> legalMoves = new ArrayList<>();
 

@@ -61,7 +61,7 @@ private final int cashedHashCode;
     public int getPiecePosition() {
             return this.piecePosition;
     }
-    public abstract List<Move> calculatedMoves(final Board board);
+    public abstract List<Move> calculateLegalMoves(final Board board);
         public abstract Piece movePiece(Move piece) ;
 
 

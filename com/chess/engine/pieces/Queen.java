@@ -14,7 +14,7 @@ public class Queen extends Piece {
     }
 
     @Override
-    public List<Move> calculatedMoves(Board board) {
+    public List<Move> calculateLegalMoves(Board board) {
         final List<Move> legalMoves = new ArrayList<>();
         for (int offset : CANDIDATE_MOVE_COORDINATES) {
             int candidateCoordinate = this.piecePosition;

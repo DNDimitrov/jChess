@@ -6,6 +6,7 @@ import com.chess.engine.player.Player;
 import com.chess.engine.player.WhitePlayer;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Board {
 
@@ -28,8 +29,8 @@ public class Board {
         this.whites = calculateActivePieces(this.gameBoard,Alliance.WHITE);
         this.currentPlayer = builder.nextMoveMaker.choosePlayer(this.whitePlayer(),this.blackPlayer());
 
-        final List<Move> whitesStandartLegalMoves = calculateStandartMoves(this.whites);
-        final List<Move> blacksStandartLegalMoves = calculateStandartMoves(this.blacks);
+        final List<Move> whitesStandartLegalMoves = calculateLegalMoves(this.whites);
+        final List<Move> blacksStandartLegalMoves = calculateLegalMoves(this.blacks);
 
         this.whitePlayer = new WhitePlayer(this,whitesStandartLegalMoves,blacksStandartLegalMoves);
         this.blackPlayer = new BlackPlayer(this,whitesStandartLegalMoves,blacksStandartLegalMoves);
@@ -72,9 +73,14 @@ public class Board {
     private List<Move> calculateStandartMoves(final List<Piece> alliance) {
         final List<Move> legalMoves = new ArrayList<>();
         for(final Piece piece : alliance) {
-            legalMoves.addAll(piece.calculatedMoves(this));
+            legalMoves.addAll(piece.calculateLegalMoves(this));
         }
         return Collections.unmodifiableList(legalMoves);
+    }
+
+    private List<Move> calculateLegalMoves(final List<Piece> pieces) {
+        return pieces.stream().flatMap(piece -> piece.calculateLegalMoves(this).stream())
+                .collect(Collectors.toList());
     }
 
     private static List<Piece> calculateActivePieces(List<Tile> gameBoard, Alliance alliance) {

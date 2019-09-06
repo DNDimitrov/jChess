@@ -15,7 +15,7 @@ public class Bishop extends Piece {
     }
 
     @Override
-    public List<Move> calculatedMoves(final Board board) {
+    public List<Move> calculateLegalMoves(final Board board) {
         final List<Move> legalMoves = new ArrayList<>();
         for (int offset : CANDIDATE_MOVE_COORDINATES) {
             int candidateCoordinate = this.piecePosition;
