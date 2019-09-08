@@ -27,13 +27,11 @@ public class Board {
         this.gameBoard = createGameBoard(builder);
         this.blacks = calculateActivePieces(this.gameBoard,Alliance.BLACK);
         this.whites = calculateActivePieces(this.gameBoard,Alliance.WHITE);
-        this.currentPlayer = builder.nextMoveMaker.choosePlayer(this.whitePlayer(),this.blackPlayer());
-
-        final List<Move> whitesStandartLegalMoves = calculateLegalMoves(this.whites);
-        final List<Move> blacksStandartLegalMoves = calculateLegalMoves(this.blacks);
-
+        final List<Move> whitesStandartLegalMoves = calculateStandartMoves(this.whites);
+        final List<Move> blacksStandartLegalMoves = calculateStandartMoves(this.blacks);
         this.whitePlayer = new WhitePlayer(this,whitesStandartLegalMoves,blacksStandartLegalMoves);
         this.blackPlayer = new BlackPlayer(this,whitesStandartLegalMoves,blacksStandartLegalMoves);
+        this.currentPlayer = builder.nextMoveMaker.choosePlayer(this.whitePlayer(),this.blackPlayer());
 
     }
 
@@ -78,10 +76,10 @@ public class Board {
         return Collections.unmodifiableList(legalMoves);
     }
 
-    private List<Move> calculateLegalMoves(final List<Piece> pieces) {
-        return pieces.stream().flatMap(piece -> piece.calculateLegalMoves(this).stream())
-                .collect(Collectors.toList());
-    }
+   // private List<Move> calculateLegalMoves(final List<Piece> pieces) {
+   //     return pieces.stream().flatMap(piece -> piece.calculateLegalMoves(this).stream())
+   //             .collect(Collectors.toList());
+  //  }
 
     private static List<Piece> calculateActivePieces(List<Tile> gameBoard, Alliance alliance) {
         final List<Piece> activePieces = new ArrayList<>();
