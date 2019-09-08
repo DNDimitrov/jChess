@@ -105,8 +105,8 @@ public abstract class Move {
         }
 
         @Override
-        public boolean equals(Object other) {
-            if(this.equals(other)) {
+        public boolean equals(final Object other) {
+            if(this == other) {
                 return true;
             }
             if(!(other instanceof AttackMove)) {
