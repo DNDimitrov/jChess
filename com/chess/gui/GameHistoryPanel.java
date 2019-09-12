@@ -7,7 +7,6 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.List;
 
 public class GameHistoryPanel extends JPanel {
     private final DataModel model;
@@ -44,7 +43,10 @@ public class GameHistoryPanel extends JPanel {
             final Move lastMove = moveHistory.getMoves().get(moveHistory.size() - 1);
             final String moveText = lastMove.toString();
             if(lastMove.getMovedPieace().getAlliance().isWhite()) {
-                this.model.setValueAt(moveText + calculateCheckandCheckMateHash(board),currentRow -1 ,1);
+                this.model.setValueAt(moveText + calculateCheckandCheckMateHash(board),currentRow,0);
+            }
+            else if(lastMove.getMovedPieace().getAlliance().isBlack()) {
+                this.model.setValueAt(moveText + calculateCheckandCheckMateHash(board),currentRow-1,1);
             }
         }
         final JScrollBar vertical = scrollPane.getVerticalScrollBar();
@@ -113,6 +115,7 @@ public class GameHistoryPanel extends JPanel {
             }
             if(column == 0) {
                 currentRow.setWhiteMove((String)aValue);
+                fireTableRowsInserted(row,row);
             }
             else if(column == 1) {
                 currentRow.setBlackMove((String)aValue);
