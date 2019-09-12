@@ -19,7 +19,7 @@ public class BoardUtils {
     public static final boolean[] FIRST_RANK = initRow(56);
 
     public static final List<String> ALGEBRAIC_NOTATION = initializeAlgebraicNotation();
-    public final Map<String,Integer> POSITION_TO_COORDINATE = initializePositionToCoordinateMap();
+    public static final Map<String,Integer> POSITION_TO_COORDINATE = initializePositionToCoordinateMap();
 
     public static final int NUM_TILES = 64;
     public static final int NUM_TILES_ON_ROW = 8;
@@ -41,7 +41,7 @@ public class BoardUtils {
         }
         return column;
     }
-    private Map<String, Integer> initializePositionToCoordinateMap() {
+    private static Map<String, Integer> initializePositionToCoordinateMap() {
         final Map<String, Integer> positionToCoordinate = new HashMap<>();
         for (int i = 0; i < NUM_TILES; i++) {
             positionToCoordinate.put(ALGEBRAIC_NOTATION.get(i), i);
