@@ -22,9 +22,10 @@ public abstract class Player {
     Player(final Board board, final List<Move> legalMoves, final List<Move> opponentMove) {
         this.board=board;
         this.playerKing = establishKing();
+        this.isInCheck = !Player.calculateAttacksOnTile(this.playerKing.getPiecePosition(),opponentMove).isEmpty();
         this.legalMoves = merge(legalMoves, calculateKingCastle(legalMoves,opponentMove));
 
-        this.isInCheck = !Player.calculateAttacksOnTile(this.playerKing.getPiecePosition(),opponentMove).isEmpty();
+
     }
 
     public static<Move> List<Move> merge(List<Move> list1, List<Move> list2)

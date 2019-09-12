@@ -171,6 +171,31 @@ public class Table {
         }
     }
 
+    public static class MoveLog {
+        private final List<Move> moves;
+        MoveLog() {
+            this.moves = new ArrayList<>();
+        }
+        public List<Move> getMoves() {
+            return this.moves;
+        }
+        public void addMove(final Move move) {
+            this.moves.add(move);
+        }
+        public int size() {
+            return this.moves.size();
+        }
+        public void clear() {
+            this.moves.clear();
+        }
+        public Move removeMove(int index) {
+            return this.moves.remove(index);
+        }
+        public boolean removeMove(final Move move) {
+            return this.moves.remove(move);
+        }
+    }
+
     private class TilePanel extends JPanel {
         private final int tileId;
         TilePanel(final BoardPanel boardPanel, final int tileId) {
@@ -200,7 +225,7 @@ public class Table {
                                 final Move move = Move.MoveFactory.createMove(chessBoard,
                                                                               sourceTile.getTileCoordinate(),
                                                                               destinationTile.getTileCoordinate());
-                                MoveTransition transition = chessBoard.currentPlayer().makeMove(move);
+                                final MoveTransition transition = chessBoard.currentPlayer().makeMove(move);
                                 if(transition.getMoveStatus().isDone()) {
                                     chessBoard = transition.getTransitionBoard();
                                     //TODO move log
@@ -246,7 +271,7 @@ public class Table {
                 for(final Move move : pieceLegalMoves(board)) {
                     if(move.getDestinationCoordinate() == this.tileId) {
                         try {
-                            add(new JLabel(new ImageIcon(ImageIO.read(new File("E:/jChess/art/misc")))));
+                            add(new JLabel(new ImageIcon(ImageIO.read(new File("E:/jChess/art/misc/green_dot.png")))));
                         } catch (Exception e) {
                             e.printStackTrace();
                         }

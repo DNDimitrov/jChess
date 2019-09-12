@@ -14,11 +14,11 @@ protected final Alliance pieceAlliance;
 protected final boolean isFirstMove;
 private final int cashedHashCode;
 
-        Piece(final PieceType pieceType, int piecePosition,final Alliance pieceAlliance){
+        Piece(final PieceType pieceType, int piecePosition,final Alliance pieceAlliance, final boolean isFirstMove){
             this.pieceType = pieceType;
         this.pieceAlliance=pieceAlliance;
         this.piecePosition=piecePosition;
-        this.isFirstMove = false;
+        this.isFirstMove = isFirstMove;
         this.cashedHashCode = computeHashCode();
         }
 
@@ -30,15 +30,7 @@ private final int cashedHashCode;
         return  result;
     };
 
-    public PieceType getPieceType() {
-            return this.pieceType;
-        }
-    public final Alliance getAlliance() {
-        return pieceAlliance;
-    }
-    public boolean isFirstMove() {
-            return this.isFirstMove;
-    }
+
 
     @Override
     public boolean equals(final Object other) {
@@ -61,6 +53,19 @@ private final int cashedHashCode;
     public int getPiecePosition() {
             return this.piecePosition;
     }
+    public int getPieceValue() {
+        return this.getPieceType().getPieceValue();
+    }
+
+    public PieceType getPieceType() {
+        return this.pieceType;
+    }
+    public final Alliance getAlliance() {
+        return pieceAlliance;
+    }
+    public boolean isFirstMove() {
+        return this.isFirstMove;
+    }
     public abstract List<Move> calculateLegalMoves(final Board board);
         public abstract Piece movePiece(Move piece) ;
 
@@ -68,7 +73,7 @@ private final int cashedHashCode;
 
     public enum PieceType {
 
-        PAWN("P") {
+        PAWN("P",100) {
             @Override
             public boolean isKing() {
                 return false;
@@ -78,7 +83,7 @@ private final int cashedHashCode;
                 return false;
             }
         },
-        KNIGHT("N") {
+        KNIGHT("N",300) {
             @Override
             public boolean isKing() {
                 return false;
@@ -89,7 +94,7 @@ private final int cashedHashCode;
                 return false;
             }
         },
-        BISHOP("B") {
+        BISHOP("B",300) {
             @Override
             public boolean isKing() {
             return false;
@@ -99,7 +104,7 @@ private final int cashedHashCode;
                 return false;
             }
         },
-        ROOK("R") {
+        ROOK("R",500) {
             @Override
             public boolean isKing() {
                 return false;
@@ -109,7 +114,7 @@ private final int cashedHashCode;
                 return true;
             }
         },
-        QUEEN("Q") {
+        QUEEN("Q",900) {
             @Override
             public boolean isKing() {
                 return false;
@@ -120,7 +125,7 @@ private final int cashedHashCode;
             }
         },
 
-        KING("K") {
+        KING("K",10000) {
             @Override
             public boolean isKing() {
                 return true;
@@ -133,9 +138,11 @@ private final int cashedHashCode;
         };
 
         private String pieceName;
+        private int pieceValue;
 
-        PieceType(final String pieceName) {
+        PieceType(final String pieceName, final int pieceValue) {
             this.pieceName = pieceName;
+            this.pieceValue = pieceValue;
         }
 
         @Override
@@ -143,6 +150,9 @@ private final int cashedHashCode;
             return this.pieceName;
         }
 
+        public int getPieceValue() {
+            return this.pieceValue;
+        }
         public abstract boolean isKing();
         public abstract boolean isRook();
     }
