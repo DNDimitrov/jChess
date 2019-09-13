@@ -34,7 +34,7 @@ public class BlackPlayer extends Player {
                     if(Player.calculateAttacksOnTile(5,opponentLegalMoves).isEmpty() &&
                        Player.calculateAttacksOnTile(6,opponentLegalMoves).isEmpty() &&
                             rookTile.getPiece().getPieceType().isRook()) {
-                        kingCastles.add(new Move.KingSideCatleMove(this.board,this.playerKing,
+                        kingCastles.add(new Move.KingSideCastleMove(this.board,this.playerKing,
                                 6,5,
                                 rookTile.getTileCoordinate(),(Rook)rookTile.getPiece()));
                     }

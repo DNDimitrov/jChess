@@ -3,7 +3,7 @@ package com.chess.engine.player;
 import com.chess.engine.board.Alliance;
 import com.chess.engine.board.Board;
 import com.chess.engine.board.Move;
-import com.chess.engine.board.Move.KingSideCatleMove;
+import com.chess.engine.board.Move.KingSideCastleMove;
 import com.chess.engine.board.Tile;
 import com.chess.engine.pieces.Piece;
 import com.chess.engine.pieces.Rook;
@@ -34,7 +34,7 @@ public class WhitePlayer extends Player{
                        Player.calculateAttacksOnTile(62,opponentLegalMoves).isEmpty() &&
                        rookTile.getPiece().getPieceType().isRook()) {
 
-                        kingCastles.add(new KingSideCatleMove(this.board,this.playerKing,
+                        kingCastles.add(new KingSideCastleMove(this.board,this.playerKing,
                                                 62,61,
                                                  rookTile.getTileCoordinate(),(Rook)rookTile.getPiece()));
                     }

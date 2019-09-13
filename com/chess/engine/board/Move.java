@@ -347,17 +347,21 @@ public abstract class Move {
         }
     }
 
-    public static final class KingSideCatleMove extends CastleMove {
+    public static final class KingSideCastleMove extends CastleMove {
 
-        public KingSideCatleMove(final Board board,
-                                 final Piece movedPieace,
-                                 final int destinationCoordinate,
-                                 final int castleRookDestination,
-                                 final int castleRookStart,
-                                 final Rook castleRook) {
+        public KingSideCastleMove(final Board board,
+                                  final Piece movedPieace,
+                                  final int destinationCoordinate,
+                                  final int castleRookDestination,
+                                  final int castleRookStart,
+                                  final Rook castleRook) {
             super(board, movedPieace, destinationCoordinate,castleRookDestination,castleRookStart,castleRook);
         }
 
+        @Override
+        public  boolean equals(final Object other) {
+            return this == other || other instanceof KingSideCastleMove && super.equals(other);
+        }
         @Override
         public String toString() {
             return "0-0";
@@ -374,6 +378,12 @@ public abstract class Move {
                                    final Rook castleRook) {
             super(board, movedPieace, destinationCoordinate,castleRookDestination,castleRookStart,castleRook);
         }
+
+        @Override
+        public  boolean equals(final Object other) {
+            return this == other || other instanceof QueenSideCastleMove && super.equals(other);
+        }
+        @Override
         public String toString() {
             return "0-0-0";
         }
