@@ -309,12 +309,16 @@ public abstract class Move {
     public static final class NullMove extends Move {
 
         public NullMove() {
-            super(null, -1);
+            super(null, 65);
         }
 
         @Override
         public Board execute() {
             throw new RuntimeException("Cannot make the null move");
+        }
+        @Override
+        public int getCurrentCoordinate() {
+            return -1;
         }
 
     }
