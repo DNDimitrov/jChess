@@ -22,6 +22,7 @@ public class TakenPiecesPanel extends JPanel {
     private final JPanel southPanel;
     private static final Color PANEL_COLOR = Color.decode("0xFDFE6");
     private static final EtchedBorder PANEL_BORDER = new EtchedBorder(EtchedBorder.RAISED);
+    private static String defaultPieceImagesPath = "E:/jChess/art/fancy/";
     public TakenPiecesPanel() {
         super(new BorderLayout());
         setBackground(PANEL_COLOR);
@@ -66,25 +67,31 @@ public class TakenPiecesPanel extends JPanel {
                 return Integer.compare(o1.getPieceValue(),o2.getPieceValue());
             }
         });
-        for(final Piece takenPiece : whiteTakenPieces) {
-            try {
-                final BufferedImage image= ImageIO.read(new File("E:/jChess/art/fancy" +
-                        takenPiece.getAlliance().toString().substring(0,1) + "" + takenPiece.toString()));
-                final ImageIcon icon = new ImageIcon(image);
-                final JLabel imageLebel = new JLabel();
-                this.southPanel.add(imageLebel);
 
-            } catch (final IOException e) {
+        for (final Piece takenPiece : whiteTakenPieces) {
+            try {
+                final BufferedImage image = ImageIO.read(new File(defaultPieceImagesPath
+                        + takenPiece.getAlliance().toString().substring(0, 1) + "" + takenPiece.toString()
+                        + ".gif"));
+                final ImageIcon ic = new ImageIcon(image);
+                final JLabel imageLabel = new JLabel(new ImageIcon(ic.getImage().getScaledInstance(
+                        ic.getIconWidth() - 15, ic.getIconWidth() - 15, Image.SCALE_SMOOTH)));
+                this.southPanel.add(imageLabel);
+            }
+            catch (final IOException e) {
                 e.printStackTrace();
             }
         }
-        for(final Piece takenPiece : blackTakenPieces) {
+
+        for (final Piece takenPiece : blackTakenPieces) {
             try {
-                final BufferedImage image= ImageIO.read(new File("E:/jChess/art/fancy" +
-                        takenPiece.getAlliance().toString().substring(0,1) + "" + takenPiece.toString()));
-                final ImageIcon icon = new ImageIcon(image);
-                final JLabel imageLebel = new JLabel();
-                this.southPanel.add(imageLebel);
+                final BufferedImage image = ImageIO.read(new File(defaultPieceImagesPath
+                        + takenPiece.getAlliance().toString().substring(0, 1) + "" + takenPiece.toString()
+                        + ".gif"));
+                final ImageIcon ic = new ImageIcon(image);
+                final JLabel imageLabel = new JLabel(new ImageIcon(ic.getImage().getScaledInstance(
+                        ic.getIconWidth() - 15, ic.getIconWidth() - 15, Image.SCALE_SMOOTH)));
+                this.northPanel.add(imageLabel);
 
             } catch (final IOException e) {
                 e.printStackTrace();
