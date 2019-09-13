@@ -6,7 +6,6 @@ import com.chess.engine.player.Player;
 import com.chess.engine.player.WhitePlayer;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class Board {
 
@@ -23,10 +22,13 @@ public class Board {
     private final BlackPlayer blackPlayer;
     private final Player currentPlayer;
 
+    private final Pawn enPessantPawn;
+
     private Board (Builder builder) {
         this.gameBoard = createGameBoard(builder);
         this.blacks = calculateActivePieces(this.gameBoard,Alliance.BLACK);
         this.whites = calculateActivePieces(this.gameBoard,Alliance.WHITE);
+        this.enPessantPawn = builder.enPessantPawn;
         final List<Move> whitesStandartLegalMoves = calculateStandartMoves(this.whites);
         final List<Move> blacksStandartLegalMoves = calculateStandartMoves(this.blacks);
         this.whitePlayer = new WhitePlayer(this,whitesStandartLegalMoves,blacksStandartLegalMoves);
@@ -163,6 +165,10 @@ public class Board {
 
         return allMoves;
 
+    }
+
+    public Pawn getEnPessantPawn() {
+        return this.enPessantPawn;
     }
 
     public static class Builder {
