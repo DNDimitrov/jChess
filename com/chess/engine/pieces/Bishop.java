@@ -20,23 +20,25 @@ public class Bishop extends Piece {
     @Override
     public List<Move> calculateLegalMoves(final Board board) {
         final List<Move> legalMoves = new ArrayList<>();
-        for (int offset : CANDIDATE_MOVE_COORDINATES) {
-            int candidateCoordinate = this.piecePosition;
-            while (BoardUtils.isValidTileCoordinate(candidateCoordinate)) {
-                if(isFirstColumnExclusion(candidateCoordinate,offset) || isEightColumnExclusion(candidateCoordinate,offset)) {
+        for (int currentCandidateOffset : CANDIDATE_MOVE_COORDINATES) {
+            int candidateDestinationCoordinate = this.piecePosition;
+            while (BoardUtils.isValidTileCoordinate(candidateDestinationCoordinate)) {
+                if(isFirstColumnExclusion(currentCandidateOffset,candidateDestinationCoordinate) ||
+                        isEightColumnExclusion(currentCandidateOffset,candidateDestinationCoordinate)) {
                     break;
                 }
-                candidateCoordinate += offset;
-                if (BoardUtils.isValidTileCoordinate(candidateCoordinate)) {
-                    final Tile candidateDestinationTile = board.getTile(candidateCoordinate);
+                candidateDestinationCoordinate += currentCandidateOffset;
+                if (BoardUtils.isValidTileCoordinate(candidateDestinationCoordinate)) {
+                    final Tile candidateDestinationTile = board.getTile(candidateDestinationCoordinate);
                     if (!candidateDestinationTile.isOccupied()) {
-                        legalMoves.add(new Move.MajorMove(board, this, candidateCoordinate));
+                        legalMoves.add(new Move.MajorMove(board, this, candidateDestinationCoordinate));
                     } else {
                         final Piece pieceAtDestination = candidateDestinationTile.getPiece();
                         final Alliance pieceAtDestinationAlliance = pieceAtDestination.getAlliance();
 
                         if (this.pieceAlliance != pieceAtDestinationAlliance) {
-                            legalMoves.add(new Move.AttackMove(board, this, candidateCoordinate, pieceAtDestination));
+                            legalMoves.add(new Move.MajorAttackMove(board, this,
+                                    candidateDestinationCoordinate, pieceAtDestination));
                         }
                         break;
                     }
@@ -56,12 +58,12 @@ public class Bishop extends Piece {
         return PieceType.BISHOP.toString();
     }
 
-    private  static  boolean isFirstColumnExclusion(final int currentPosition, final int offset) {
-        return BoardUtils.FIRST_COLUMN[currentPosition] && (offset == -9 || offset == 7);
+    private  static  boolean isFirstColumnExclusion(final int currentCandidate, final int candidateDestinationCoordinate) {
+        return BoardUtils.INSTANCE.FIRST_COLUMN.get(candidateDestinationCoordinate) && (currentCandidate == -9 || currentCandidate == 7);
     }
 
-    private  static  boolean isEightColumnExclusion(final int currentPosition, final int offset) {
-        return BoardUtils.EIGHT_COLUMN[currentPosition] && (offset == -7 || offset == 9);
+    private  static  boolean isEightColumnExclusion(final int currentCandidate, final int candidateDestinationCoordinate) {
+        return BoardUtils.INSTANCE.EIGHTH_COLUMN.get(candidateDestinationCoordinate) && (currentCandidate == -7 || currentCandidate == 9);
     }
 }
 

@@ -21,23 +21,24 @@ public class Queen extends Piece {
     @Override
     public List<Move> calculateLegalMoves(Board board) {
         final List<Move> legalMoves = new ArrayList<>();
-        for (int offset : CANDIDATE_MOVE_COORDINATES) {
-            int candidateCoordinate = this.piecePosition;
-            while (BoardUtils.isValidTileCoordinate(candidateCoordinate)) {
-                if (isFirstColumnExclusion(candidateCoordinate, offset) || isEightColumnExclusion(candidateCoordinate, offset)) {
+        for (int currentCandidateOffset : CANDIDATE_MOVE_COORDINATES) {
+            int candidateDestinationCoordinate = this.piecePosition;
+            while (BoardUtils.isValidTileCoordinate(candidateDestinationCoordinate)) {
+               if (isFirstColumnExclusion(currentCandidateOffset, candidateDestinationCoordinate) ||
+                        isEightColumnExclusion(currentCandidateOffset, candidateDestinationCoordinate)) {
                     break;
                 }
-                candidateCoordinate += offset;
-                if (BoardUtils.isValidTileCoordinate(candidateCoordinate)) {
-                    final Tile candidateDestinationTile = board.getTile(candidateCoordinate);
+                candidateDestinationCoordinate += currentCandidateOffset;
+                if (BoardUtils.isValidTileCoordinate(candidateDestinationCoordinate)) {
+                    final Tile candidateDestinationTile = board.getTile(candidateDestinationCoordinate);
                     if (!candidateDestinationTile.isOccupied()) {
-                        legalMoves.add(new Move.MajorMove(board, this, candidateCoordinate));
+                        legalMoves.add(new Move.MajorMove(board, this, candidateDestinationCoordinate));
                     } else {
                         final Piece pieceAtDestination = candidateDestinationTile.getPiece();
                         final Alliance pieceAtDestinationAlliance = pieceAtDestination.getAlliance();
 
                         if (this.pieceAlliance != pieceAtDestinationAlliance) {
-                            legalMoves.add(new Move.AttackMove(board, this, candidateCoordinate, pieceAtDestination));
+                            legalMoves.add(new Move.MajorAttackMove(board, this, candidateDestinationCoordinate, pieceAtDestination));
                         }
                         break;
                     }
@@ -54,11 +55,15 @@ public class Queen extends Piece {
     public String toString() {
         return PieceType.QUEEN.toString();
     }
-    private static boolean isFirstColumnExclusion(final int currentPosition, final int offset) {
-        return BoardUtils.FIRST_COLUMN[currentPosition] && (offset == -1 || offset == -9 || offset == 7);
+    private static boolean isFirstColumnExclusion(final int currentPosition,
+                                                  final int candidatePosition) {
+        return BoardUtils.INSTANCE.FIRST_COLUMN.get(candidatePosition) && ((currentPosition == -9)
+                || (currentPosition == -1) || (currentPosition == 7));
     }
 
-    private static boolean isEightColumnExclusion(final int currentPosition, final int offset) {
-        return BoardUtils.EIGHT_COLUMN[currentPosition] && (offset == 1 || offset == -7 || offset == 9);
+    private static boolean isEightColumnExclusion(final int currentPosition,
+                                                  final int candidatePosition) {
+        return BoardUtils.INSTANCE.EIGHTH_COLUMN.get(candidatePosition) && ((currentPosition == -7)
+                || (currentPosition == 1) || (currentPosition == 9));
     }
 }

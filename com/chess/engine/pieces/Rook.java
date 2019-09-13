@@ -22,7 +22,7 @@ public class Rook extends Piece {
         for (int offset : CANDIDATE_MOVE_COORDINATES) {
             int candidateCoordinate = this.piecePosition;
             while (BoardUtils.isValidTileCoordinate(candidateCoordinate)) {
-                if (isFirstColumnExclusion(candidateCoordinate, offset) || isEightColumnExclusion(candidateCoordinate, offset)) {
+                if (isColumnExclusion(offset,candidateCoordinate)) {
                     break;
                 }
                 candidateCoordinate += offset;
@@ -35,7 +35,7 @@ public class Rook extends Piece {
                         final Alliance pieceAtDestinationAlliance = pieceAtDestination.getAlliance();
 
                         if (this.pieceAlliance != pieceAtDestinationAlliance) {
-                            legalMoves.add(new Move.AttackMove(board, this, candidateCoordinate, pieceAtDestination));
+                            legalMoves.add(new Move.MajorAttackMove(board, this, candidateCoordinate, pieceAtDestination));
                         }
                         break;
                     }
@@ -53,11 +53,9 @@ public class Rook extends Piece {
         return PieceType.ROOK.toString();
     }
 
-    private static boolean isFirstColumnExclusion(final int currentPosition, final int offset) {
-        return BoardUtils.FIRST_COLUMN[currentPosition] && (offset == -1);
-    }
-
-    private static boolean isEightColumnExclusion(final int currentPosition, final int offset) {
-        return BoardUtils.EIGHT_COLUMN[currentPosition] && (offset == 1);
+    private static boolean isColumnExclusion(final int currentCandidate,
+                                             final int candidateDestinationCoordinate) {
+        return (BoardUtils.INSTANCE.FIRST_COLUMN.get(candidateDestinationCoordinate) && (currentCandidate == -1)) ||
+                (BoardUtils.INSTANCE.EIGHTH_COLUMN.get(candidateDestinationCoordinate) && (currentCandidate == 1));
     }
 }
