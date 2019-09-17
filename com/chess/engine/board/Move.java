@@ -466,6 +466,7 @@ public abstract class Move {
                                       final int destinationCoordinate) {
             for(final Move move: board.getAllMoves()) {
                 if(move.getCurrentCoordinate() == currentCoordinate && move.getDestinationCoordinate() == destinationCoordinate) {
+                    System.out.println("Moved from "+ currentCoordinate + " to " + destinationCoordinate);
                     return move;
                 }
             }

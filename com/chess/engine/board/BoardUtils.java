@@ -77,7 +77,7 @@ public enum  BoardUtils {
     public static boolean isValidTileCoordinate(final int coordinate) {
         return coordinate>=0 && coordinate <NUM_TILES;
     }
-    public int getCoordinateAtPosition(final String position) {
+    public static int getCoordinateAtPosition(final String position) {
         return POSITION_TO_COORDINATE.get(position);
     }
 
