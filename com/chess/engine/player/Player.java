@@ -9,13 +9,11 @@ import com.chess.engine.pieces.Piece;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Stream;
 
 public abstract class Player {
 
     protected final Board board;
-    protected final Piece playerKing;
+    protected final King playerKing;
     public  final List<Move> legalMoves;
     private final Boolean isInCheck;
 
@@ -36,7 +34,7 @@ public abstract class Player {
     }
 
     //Not sure if this function should return Piece or King object
-    public Piece getPlayerKing() {
+    public King getPlayerKing() {
         return this.playerKing;
     }
 
@@ -76,6 +74,14 @@ public abstract class Player {
     public boolean isInStaleMate() {
         return !this.isInCheck && !hasEscapeMoves();
     }
+
+    public boolean isKingSideCastleCapable() {
+        return this.playerKing.isKingSideCatleCapable();
+    }
+    public boolean isQueenSideCastleCapable() {
+        return this.playerKing.isQueenSideCatleCapable();
+    }
+
 
     protected boolean hasEscapeMoves() {
         for(Move move : this.legalMoves) {

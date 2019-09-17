@@ -9,12 +9,40 @@ import java.util.List;
 public class King extends Piece{
 
     private final static int[] CANDIDATE_MOVE_COORDINATES = {-7,-8,-9,-1,1,7,8,9};
+    private final boolean kingSideCastleCapable;
+    private final boolean queenSideCastleCapable;
+    private final boolean isCastled;
 
-    public King(final int piecePosition,final Alliance pieceAlliance) {
+
+    public King(final int piecePosition,
+                final Alliance pieceAlliance,
+                final boolean kingSideCastleCapable,
+                final boolean queenSideCastleCapable) {
         super(PieceType.KING, piecePosition, pieceAlliance,true);
+        this.kingSideCastleCapable = kingSideCastleCapable;
+        this.queenSideCastleCapable = queenSideCastleCapable;
+        this.isCastled = false;
     }
-    public King(final int piecePosition,final Alliance pieceAlliance,final boolean isFirstMove) {
+    public King(final int piecePosition,
+                final Alliance pieceAlliance,
+                final boolean isFirstMove,
+                final boolean kingSideCastleCapable,
+                final boolean queenSideCastleCapable,
+                final boolean isCastled) {
         super(PieceType.KING, piecePosition, pieceAlliance,isFirstMove);
+        this.kingSideCastleCapable = kingSideCastleCapable;
+        this.queenSideCastleCapable = queenSideCastleCapable;
+        this.isCastled = isCastled;
+    }
+    public boolean isCastled() {
+        return this.isCastled;
+    }
+
+    public boolean isKingSideCatleCapable() {
+        return this.kingSideCastleCapable;
+    }
+    public boolean isQueenSideCatleCapable() {
+        return this.queenSideCastleCapable;
     }
 
     @Override
@@ -51,7 +79,10 @@ public class King extends Piece{
 
     @Override
     public King movePiece(final Move move) {
-        return new King(move.getDestinationCoordinate(),move.getMovedPieace().getAlliance());
+        return new King(move.getDestinationCoordinate(),
+                        move.getMovedPieace().getAlliance(),
+                false ,
+                move.isCastledMove(),false,false);
     }
 
     @Override
